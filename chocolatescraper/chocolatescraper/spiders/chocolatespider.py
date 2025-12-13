@@ -1,6 +1,6 @@
 import scrapy
-
-
+from chocolatescraper.items import ChocolateProduct
+from chocolatescraper.itemloaders import ChocolateProductLoader
 class ChocolatespiderSpider(scrapy.Spider):
     name = "chocolatespider"
     allowed_domains = ["chocolatescraper"]
@@ -10,11 +10,12 @@ class ChocolatespiderSpider(scrapy.Spider):
         products = response.css('.product-item')
         
         for product in products:
-            yield{
-                'name':product.css('div.product-item-meta a::text').get(),
-                'price':product.css('span.price').get().replace('<span class="price">\n              <span class="visually-hidden">Sale price</span>',"").replace('</span>',""),
-                'url':product.css('div.product-item-meta a').attrib['href']
-            }
+            chocolate = ChocolateProductLoader(item=ChocolateProduct(),selector=product)
+            chocolate.add_css('name','div.product-item-meta a::text'),
+            chocolate.add_css('price',product.css('span.price').get().replace('<span class="price">\n              <span class="visually-hidden">Sale price</span>',"").replace('</span>',""),
+            Chocolate['url']=product.css('div.product-item-meta a').attrib['href']
+            yield chocolate
+            
         
         next_page = response.css('[rel="next"]::attr(href)').get()
         if(next_page is not None):
