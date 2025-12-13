@@ -11,10 +11,10 @@ class ChocolatespiderSpider(scrapy.Spider):
         
         for product in products:
             chocolate = ChocolateProductLoader(item=ChocolateProduct(),selector=product)
-            chocolate.add_css('name','div.product-item-meta a::text'),
-            chocolate.add_css('price',product.css('span.price').get().replace('<span class="price">\n              <span class="visually-hidden">Sale price</span>',"").replace('</span>',""),
-            Chocolate['url']=product.css('div.product-item-meta a').attrib['href']
-            yield chocolate
+            chocolate.add_css('name','div.product-item-meta a::text')
+            chocolate.add_css('price','span.price',re=r'£\d+\.\d{2}')
+            chocolate.add_css('url','div.product-item-meta a::attr(href)')
+            yield chocolate.load_item()
             
         
         next_page = response.css('[rel="next"]::attr(href)').get()
