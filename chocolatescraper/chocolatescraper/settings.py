@@ -61,6 +61,7 @@ DOWNLOAD_DELAY = 1
 ITEM_PIPELINES = {
    "chocolatescraper.pipelines.GbpToRuppesPipeline": 100,
    "chocolatescraper.pipelines.RemoveDuplicatePipeline": 200,
+   "chocolatescraper.pipelines.SaveToMySQL": 300,
 }
 
 # Enable and configure the AutoThrottle extension (disabled by default)
