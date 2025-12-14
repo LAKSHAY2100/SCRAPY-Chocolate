@@ -14,6 +14,10 @@ class ChocolatespiderSpider(scrapy.Spider):
             chocolate.add_css('name','div.product-item-meta a::text')
             chocolate.add_css('price','span.price',re=r'£\d+\.\d{2}')
             chocolate.add_css('url','div.product-item-meta a::attr(href)')
+            if(product.css('div.product-item__image-wrapper div span::text').get()):
+                chocolate.add_value('status','Out of Stock')
+            else:
+                chocolate.add_value('status','In Stock')
             yield chocolate.load_item()
             
         
